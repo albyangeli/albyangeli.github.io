@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<title>Parigi · 24–27 maggio 2026</title>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --ink: #0a0a0a;
+    --mute: #6b6b6b;
+    --line: #e5e3dc;
+    --accent: #c8423c;
+    --card: #ffffff;
+    --done: #a8a59a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 16px;
+    padding-bottom: 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  header {
+    padding: 32px 20px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    background: rgba(250, 250, 247, 0.92);
+  }
+
+  .title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  /* DAY NAV */
+  .day-nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky;
+    top: 90px;
+    z-index: 99;
+    scrollbar-width: none;
+  }
+  .day-nav::-webkit-scrollbar { display: none; }
+
+  .day-nav a {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    background: var(--card);
+    transition: all 0.2s;
+  }
+
+  .day-nav a:active { background: var(--ink); color: var(--bg); }
+
+  /* DAY SECTION */
+  .day {
+    padding: 28px 20px 12px;
+  }
+
+  .day-header {
+    margin-bottom: 24px;
+  }
+
+  .day-date {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .day-title {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .day-desc {
+    font-size: 14px;
+    color: var(--mute);
+    margin-top: 8px;
+  }
+
+  .progress {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--mute);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 2px;
+    background: var(--line);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s;
+  }
+
+  /* SECTION HEADER */
+  .section {
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* STOP CARD */
+  .stop {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: opacity 0.3s;
+  }
+
+  .stop.checked {
+    opacity: 0.55;
+  }
+
+  .stop.checked .stop-name {
+    text-decoration: line-through;
+    text-decoration-color: var(--done);
+  }
+
+  .stop-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .stop-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .stop.checked .stop-num {
+    background: var(--done);
+  }
+
+  .stop-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .stop-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+    line-height: 1.25;
+  }
+
+  .stop-tag {
+    font-size: 12px;
+    color: var(--mute);
+    font-weight: 500;
+  }
+
+  .stop-toggle {
+    flex-shrink: 0;
+    margin-top: 4px;
+    color: var(--mute);
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+
+  .stop.open .stop-toggle {
+    transform: rotate(180deg);
+  }
+
+  .stop-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .stop.open .stop-body {
+    max-height: 1200px;
+  }
+
+  .stop-content {
+    padding: 0 16px 16px 56px;
+    font-size: 14.5px;
+    color: #2a2a2a;
+    line-height: 1.6;
+  }
+
+  .stop-content p { margin-bottom: 10px; }
+
+  .stop-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  .btn {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .btn-map {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .btn-map:active { background: var(--accent); }
+
+  .btn-check {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+
+  .btn-check:active { background: var(--line); }
+
+  .stop.checked .btn-check {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  /* INFO BOXES */
+  .info-box {
+    background: var(--card);
+    border-left: 3px solid var(--accent);
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  .info-box strong {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+
+  .info-box p { font-size: 14px; color: #2a2a2a; }
+
+  /* ROUTE LINK */
+  .route-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    margin-top: 4px;
+    padding: 8px 0;
+  }
+
+  .route-link::after { content: '→'; }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--mute);
+    border-top: 1px solid var(--line);
+    margin-top: 24px;
+  }
+
+  footer .reset {
+    background: none;
+    border: 1px solid var(--line);
+    padding: 8px 16px;
+    font-size: 11px;
+    border-radius: 100px;
+    color: var(--mute);
+    cursor: pointer;
+    margin-top: 12px;
+    font-family: inherit;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* INTRO/CARDS */
+  .intro {
+    padding: 28px 20px;
+    background: var(--ink);
+    color: var(--bg);
+    margin-bottom: 0;
+  }
+  .intro .intro-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .intro p { font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.85); margin-bottom: 10px; }
+
+  /* SMALL META */
+  .meta-row {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--mute);
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    background: var(--card);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+  .meta-row span { display: flex; align-items: center; gap: 4px; }
+  .meta-row strong { color: var(--ink); font-weight: 600; }
+
+  @media (min-width: 640px) {
+    body { font-size: 17px; max-width: 720px; margin: 0 auto; box-shadow: 0 0 60px rgba(0,0,0,0.04); }
+    .stop-name { font-size: 18px; }
+    .day-title { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">Itinerario</div>
+  <div class="subtitle">Parigi · 24–27 maggio</div>
+</header>
+
+<nav class="day-nav">
+  <a href="#dom">DOM 24</a>
+  <a href="#lun">LUN 25</a>
+  <a href="#mar">MAR 26</a>
+  <a href="#mer">MER 27</a>
+</nav>
+
+<section class="intro">
+  <div class="intro-label">Fil rouge</div>
+  <p>Parigi Belle Époque, passages couverts, Montmartre autentica, caffè storici, Saint-Germain letteraria.</p>
+  <p>Ritmo lento. Pochi musei ma scelti bene. Atmosfera prima della checklist.</p>
+</section>
+
+<!-- DOMENICA -->
+<section class="day" id="dom">
+  <div class="day-header">
+    <div class="day-date">Domenica 24 maggio</div>
+    <div class="day-title">Arrivo, passages e Senna</div>
+    <div class="day-desc">Hotel → asse storico dei passaggi coperti → Senna al tramonto.</div>
+    <div class="progress">
+      <span id="prog-dom-txt">0/10</span>
+      <div class="progress-bar"><div class="progress-fill" id="prog-dom"></div></div>
+    </div>
+  </div>
+
+  <div class="meta-row">
+    <span>📍 <strong>9° arr.</strong></span>
+    <span>🚶 <strong>~6 km</strong></span>
+    <span>⏱ <strong>4–5h</strong></span>
+  </div>
+
+  <!-- TRATTO 1 -->
+  <div class="section">
+    <div class="section-title">Tratto 1 · Hotel → Palais Royal</div>
+
+    <div class="stop" data-id="d1-1">
+      <div class="stop-head">
+        <div class="stop-num">1</div>
+        <div class="stop-info">
+          <div class="stop-name">Passage Verdeau</div>
+          <div class="stop-tag">Passage couvert · 1847</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Aperto nel 1847, è l'ultimo dei tre passages collegati (insieme a Panoramas e Jouffroy) ed è il più discreto e luminoso, grazie alla verrière a spina di pesce. Aragon lo chiamava "la Parigi perduta di Émile Zola": ha conservato l'anima.</p>
+        <p>L'apertura dell'Hôtel Drouot nel 1852 — la casa d'aste a pochi metri — fece sì che si riempisse di antiquari, librai e galleristi. Ancora oggi è il regno dei collezionisti: stampe, libri antichi, cartoline, fotografie d'epoca.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/o2LGArxXLdDoUDPV8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d1-2">
+      <div class="stop-head">
+        <div class="stop-num">2</div>
+        <div class="stop-info">
+          <div class="stop-name">Passage Jouffroy</div>
+          <div class="stop-tag">Passage couvert · 1847</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Inaugurato nel 1847, fu il primo passage parigino costruito interamente in metallo e vetro, con il legno usato solo come decorazione. Fu anche il primo a essere dotato di riscaldamento sotto il pavimento — una rivoluzione per l'epoca.</p>
+        <p>Al suo interno trovi l'Hôtel Chopin (in attività dal 1846, 36 stanze immerse nel tempo) e l'ingresso del Musée Grévin, il museo delle cere fondato nel 1882 dal vignettista Alfred Grévin. Imperdibile la sosta da À la Mère de Famille, la cioccolateria più antica di Parigi.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/o2LGArxXLdDoUDPV8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d1-3">
+      <div class="stop-head">
+        <div class="stop-num">3</div>
+        <div class="stop-info">
+          <div class="stop-name">Passage des Panoramas</div>
+          <div class="stop-tag">Passage couvert · 1799</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Costruito nel 1799, è il più antico passage couvert di Parigi ancora in piedi: il "progenitore" da cui sono nati tutti gli altri. Prende il nome dai due grandi panorami circolari dipinti — vere installazioni immersive ante litteram — che si trovavano alle sue estremità.</p>
+        <p>Fu uno dei primi luoghi pubblici parigini a essere illuminato a gas, nel 1817. Oggi è il paradiso dei filatelici e dei numismatici: decine di piccoli negozi di francobolli, vecchie cartoline e monete, oltre a ristoranti d'autore come Racines e Caillebotte.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/o2LGArxXLdDoUDPV8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d1-4">
+      <div class="stop-head">
+        <div class="stop-num">4</div>
+        <div class="stop-info">
+          <div class="stop-name">Galerie Vivienne</div>
+          <div class="stop-tag">Passage couvert · 1823</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>La più elegante e iconica galleria coperta di Parigi, in stile neoclassico, con pavimenti a mosaico firmati da Giandomenico Facchina (lo stesso mosaicista del Palais Garnier) e una cupola in vetro spettacolare.</p>
+        <p>Costruita nel 1823 da Marchoux, presidente della Camera dei Notai, divenne presto il salotto dell'aristocrazia parigina. Oggi ospita la storica libreria Jousseaume (dal 1826), bistrot eleganti come Bistrot Vivienne e boutique di moda come Jean Paul Gaultier.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/o2LGArxXLdDoUDPV8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d1-5">
+      <div class="stop-head">
+        <div class="stop-num">5</div>
+        <div class="stop-info">
+          <div class="stop-name">Palais Royal</div>
+          <div class="stop-tag">Palazzo e giardini · 1633</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Costruito nel 1633 per il Cardinale Richelieu (sì, quello dei Tre Moschettieri) come Palais Cardinal, divenne Palais Royal alla sua morte quando passò alla corona. Anna d'Austria vi crebbe il giovane Luigi XIV prima del trasferimento a Versailles.</p>
+        <p>Nel '700, sotto Philippe Égalité (il duca d'Orléans), gli arcate vennero riempite di caffè, teatri e gioco d'azzardo: divenne l'"anti-Versailles" della Rivoluzione, una vera repubblica nel cuore di Parigi. Nel cortile d'onore ci sono le celebri Colonnes de Buren (1986): 260 colonne ottagonali a strisce bianche e nere — fortemente contestate all'epoca, oggi simbolo della città.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/o2LGArxXLdDoUDPV8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- TRATTO 2 -->
+  <div class="section">
+    <div class="section-title">Tratto 2 · Palais Royal → Pont Neuf</div>
+
+    <div class="stop" data-id="d1-6">
+      <div class="stop-head">
+        <div class="stop-num">6</div>
+        <div class="stop-info">
+          <div class="stop-name">Place de la Concorde</div>
+          <div class="stop-tag">La più grande piazza di Parigi</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>La più grande piazza di Parigi (7,6 ettari), progettata nel 1755 da Ange-Jacques Gabriel come scrigno per una statua equestre di Luigi XV. Durante la Rivoluzione si chiamava Place de la Révolution: qui fu ghigliottinato Luigi XVI il 21 gennaio 1793, e dopo di lui oltre 1.300 persone — tra cui Maria Antonietta, Danton e Robespierre.</p>
+        <p>L'obelisco al centro è autentico: ha 3.300 anni e proviene dal tempio di Luxor in Egitto, donato dal viceré ottomano Mehmet Ali nel 1830 per ringraziare Champollion di aver decifrato i geroglifici.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/9pgm2E87eZg9Jhqw5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d1-7">
+      <div class="stop-head">
+        <div class="stop-num">7</div>
+        <div class="stop-info">
+          <div class="stop-name">Piramide del Louvre</div>
+          <div class="stop-tag">Spazio urbano monumentale</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Vivila come spazio urbano, non come museo. La piramide di vetro e acciaio di Ieoh Ming Pei fu inaugurata nel 1989 e all'epoca scatenò una controversia furibonda: i parigini la consideravano un sacrilegio modernista sul Louvre rinascimentale.</p>
+        <p>È alta 21,6 metri ed è composta da 673 vetri romboidali. Il mito dei "666 vetri satanici" è una leggenda metropolitana: il numero reale è 673. Di notte, l'illuminazione interna trasforma la piazza in uno dei luoghi più cinematografici di Parigi.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/9pgm2E87eZg9Jhqw5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d1-8">
+      <div class="stop-head">
+        <div class="stop-num">8</div>
+        <div class="stop-info">
+          <div class="stop-name">Pont des Arts</div>
+          <div class="stop-tag">Ponte pedonale · vista Senna</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Il primo ponte in metallo di Parigi, inaugurato nel 1804 sotto Napoleone. Collega il Louvre all'Institut de France ed è completamente pedonale. Fu chiamato "Pont des Arts" perché di fronte al Louvre, allora "Palais des Arts".</p>
+        <p>Fino al 2014 era famoso per i lucchetti dell'amore: ne furono attaccati oltre un milione, fino a far crollare parte della ringhiera. Il Comune li ha rimossi tutti e oggi i pannelli sono trasparenti — più rispetto del ponte, stesso panorama.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/9pgm2E87eZg9Jhqw5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d1-9">
+      <div class="stop-head">
+        <div class="stop-num">9</div>
+        <div class="stop-info">
+          <div class="stop-name">Pont Neuf</div>
+          <div class="stop-tag">Il "Nuovo Ponte" più antico · 1607</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Nonostante il nome ("ponte nuovo"), è il più antico ponte ancora in piedi sulla Senna a Parigi: completato nel 1607 sotto Enrico IV. Era "nuovo" perché, primo a Parigi, non aveva case sopra: solo strada, marciapiedi e una vista libera sul fiume — un'idea radicale per l'epoca.</p>
+        <p>Alla punta dell'Île de la Cité c'è il Square du Vert-Galant, dal soprannome di Enrico IV ("il galante sempreverde"). Il punto è circa 7 metri sotto il livello attuale del ponte: era il livello naturale della Senna prima delle arginature.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/9pgm2E87eZg9Jhqw5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d1-10">
+      <div class="stop-head">
+        <div class="stop-num">10</div>
+        <div class="stop-info">
+          <div class="stop-name">Île de la Cité</div>
+          <div class="stop-tag">Cuore antico di Parigi</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Il cuore originario di Parigi: qui i Parisii (tribù celtica) fondarono Lutetia tra il 250 e il 225 a.C. È una delle due isole naturali rimaste sulla Senna a Parigi.</p>
+        <p>Per millenni l'isola fu un labirinto di vicoli medievali: Haussmann li distrusse quasi tutti negli anni 1860. Oggi resistono Sainte-Chapelle, la Conciergerie e Notre-Dame (riaperta a dicembre 2024 dopo l'incendio del 2019). Punto perfetto per il tramonto sulla Senna.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/9pgm2E87eZg9Jhqw5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>🍽 Cena</strong>
+    <p><strong>Chez Gustave</strong> (Place Gustave Toudouze) — bistrot verace, gioviale. Oppure <strong>Saisons</strong> (Rue Lamartine) — intimo, cucina di mercato raffinata.</p>
+  </div>
+</section>
+
+<!-- LUNEDÌ -->
+<section class="day" id="lun">
+  <div class="day-header">
+    <div class="day-date">Lunedì 25 maggio</div>
+    <div class="day-title">Montmartre in discesa + Marais</div>
+    <div class="day-desc">Metro fino a Lamarck-Caulaincourt, poi discesa lenta. Pomeriggio nel Marais.</div>
+    <div class="progress">
+      <span id="prog-lun-txt">0/16</span>
+      <div class="progress-bar"><div class="progress-fill" id="prog-lun"></div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>☕ Colazione</strong>
+    <p><strong>Hôtel Amour</strong> — 8 Rue de Navarin. Bistrot bohémien con corte interna, 10 min a piedi dall'hotel.</p>
+  </div>
+
+  <!-- MONTMARTRE -->
+  <div class="section">
+    <div class="section-title">Mattina · Montmartre</div>
+
+    <div class="stop" data-id="d2-1">
+      <div class="stop-head">
+        <div class="stop-num">1</div>
+        <div class="stop-info">
+          <div class="stop-name">Sacré-Cœur</div>
+          <div class="stop-tag">Basilica · 1875–1914</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Costruita tra il 1875 e il 1914 (consacrata solo nel 1919, per via della Grande Guerra) come atto di "espiazione nazionale" dopo la sconfitta franco-prussiana del 1870 e la Comune di Parigi. La scelta della collina fu politicamente carica: è qui che la Comune era cominciata nel 1871.</p>
+        <p>Il nome "Montmartre" significa "Monte del Martire": secondo la tradizione, qui fu decapitato San Dionigi, primo vescovo di Parigi, nel III secolo. La basilica resta sempre bianca grazie alla pietra di travertino di Château-Landon, che a contatto con l'acqua piovana rilascia calcite — un'autopulizia naturale. La campana "Savoyarde" (19 tonnellate) è una delle più grandi di Francia.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/w8SwauFTSvcABvxy5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-2">
+      <div class="stop-head">
+        <div class="stop-num">2</div>
+        <div class="stop-info">
+          <div class="stop-name">Place du Tertre</div>
+          <div class="stop-tag">Piazza degli artisti</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Il cuore storico del vecchio villaggio di Montmartre, quando era ancora un comune autonomo fuori Parigi (fu annesso solo nel 1860). Il nome "tertre" significa "monticello": è il punto più alto del villaggio, a 130 metri.</p>
+        <p>Dalla fine dell'800 è la piazza dei ritrattisti e dei caricaturisti, eredi (alla lontana) di Renoir, Picasso, Modigliani, Utrillo. Oggi è inevitabilmente turistica: attraversala con passo veloce nelle ore di punta, oppure goditela presto al mattino quando si sveglia.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/w8SwauFTSvcABvxy5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-3">
+      <div class="stop-head">
+        <div class="stop-num">3</div>
+        <div class="stop-info">
+          <div class="stop-name">Rue de l'Abreuvoir</div>
+          <div class="stop-tag">Strada da cartolina</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Una delle strade più fotografate di Parigi: cobblestone, lampioni a gas, scorci che sembrano dipinti. Il nome ("abreuvoir" = abbeveratoio) viene da una fontana medievale dove i contadini di Montmartre portavano gli animali a bere, finché la collina non venne urbanizzata nell'800.</p>
+        <p>Al numero 2 c'è la celebre Maison Rose, all'angolo: la prospettiva discendente sulla Sacré-Cœur che si intravede dietro è uno dei cliché visivi più amati di Parigi.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/w8SwauFTSvcABvxy5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-4">
+      <div class="stop-head">
+        <div class="stop-num">4</div>
+        <div class="stop-info">
+          <div class="stop-name">La Maison Rose</div>
+          <div class="stop-tag">Bistrot iconico (esterno)</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>La casetta rosa al 2 di Rue de l'Abreuvoir fu acquistata nel 1905 dal pittore catalano Ramon Pichot, amico di Picasso e Dalí. Nel 1908 sposò Germaine Gargallo, modella di Montmartre — e fu Germaine ad aprirvi un piccolo ristorante popolare a inizio '900.</p>
+        <p>Il colore rosa fu ispirato da un viaggio dei due in Catalogna. Frequentata da Albert Camus, Suzanne Valadon, Maurice Utrillo (che la immortalò nel celebre dipinto "La maison rose à Montmartre" negli anni '30). Chiusa lunedì e martedì: per noi è sosta fotografica.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/w8SwauFTSvcABvxy5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-5">
+      <div class="stop-head">
+        <div class="stop-num">5</div>
+        <div class="stop-info">
+          <div class="stop-name">Clos Montmartre</div>
+          <div class="stop-tag">L'ultima vigna di Parigi</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>L'ultima vigna sopravvissuta dentro Parigi, all'angolo tra Rue des Saules e Rue Saint-Vincent. Ricorda che fino all'800 la collina era coperta da mulini, frutteti e vigneti: Montmartre era un vero villaggio agricolo, non un quartiere.</p>
+        <p>Reimpiantata simbolicamente nel 1933 per proteggere il terreno dalla speculazione edilizia, oggi produce circa 1.500 bottiglie l'anno di un vino piuttosto modesto — ma il ricavato va in beneficenza. La vendemmia, a inizio ottobre, è una festa di quartiere.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/w8SwauFTSvcABvxy5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-6">
+      <div class="stop-head">
+        <div class="stop-num">6</div>
+        <div class="stop-info">
+          <div class="stop-name">Au Lapin Agile</div>
+          <div class="stop-tag">Cabaret storico</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Uno dei più antichi cabaret di Parigi ancora in attività. Il nome è un calembour: l'insegna originale, dipinta dal caricaturista André Gill nel 1875, raffigurava un coniglio ("lapin") che salta agile da una padella — "Le Lapin à Gill" è diventato per assonanza "Le Lapin Agile".</p>
+        <p>Frequentato a inizio '900 da Picasso (che lo dipinse in "Au Lapin Agile" del 1905), Modigliani, Apollinaire, Verlaine, Renoir, Maupassant. Ancora oggi mette in scena spettacoli di chansons tradizionali nella stessa saletta di legno.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/w8SwauFTSvcABvxy5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-7">
+      <div class="stop-head">
+        <div class="stop-num">7</div>
+        <div class="stop-info">
+          <div class="stop-name">Rue Lepic</div>
+          <div class="stop-tag">Strada di Amélie</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Una delle strade più caratteristiche di Montmartre, in salita e con un mercato vivo nella parte bassa. Al numero 54 c'è la casa dove vissero Vincent e Theo van Gogh dal 1886 al 1888: è qui che Vincent dipinse alcuni dei suoi primi quadri francesi e i Moulin de la Galette.</p>
+        <p>Al numero 15, il Café des Deux Moulins è il bar dove lavora Amélie Poulain nel film di Jean-Pierre Jeunet (2001). È rimasto un bistrot di quartiere autentico, non un'attrazione turistica costruita ad arte.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/w8SwauFTSvcABvxy5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-8">
+      <div class="stop-head">
+        <div class="stop-num">8</div>
+        <div class="stop-info">
+          <div class="stop-name">Moulin de la Galette</div>
+          <div class="stop-tag">Mulino e ballo · 1622</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>L'ultimo dei trenta mulini che un tempo punteggiavano la collina di Montmartre, costruito nel 1622. Il nome viene dalla "galette", una piccola pagnotta rustica che la famiglia Debray, mugnai, vendeva con un bicchiere di vino al mulino.</p>
+        <p>Nel 1833 fu trasformato in guinguette (locale da ballo all'aperto). Renoir lo immortalò nel 1876 nel celeberrimo "Bal du Moulin de la Galette" (oggi al Musée d'Orsay), e Van Gogh, Toulouse-Lautrec e Picasso lo dipinsero a loro volta. Il mulino non è visitabile, ma si vede dall'esterno.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/w8SwauFTSvcABvxy5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-9">
+      <div class="stop-head">
+        <div class="stop-num">9</div>
+        <div class="stop-info">
+          <div class="stop-name">Moulin Rouge</div>
+          <div class="stop-tag">Cabaret · 1889</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Aperto nel 1889 (lo stesso anno della Torre Eiffel) da Joseph Oller e Charles Zidler, fu il locale che diede vita al French Cancan moderno. Toulouse-Lautrec ne fu il "graphic designer" ante litteram: i suoi manifesti — La Goulue, Jane Avril — sono icone del marchio Belle Époque.</p>
+        <p>Curiosità: non è mai stato un vero mulino, nonostante il nome. Le pale rosse sono solo decorative — un richiamo nostalgico ai mulini di Montmartre. Bruciò in un incendio nel 1915 e fu ricostruito nel 1921. Nell'aprile 2024 le pale sono cadute (incidente strutturale), poi rimontate l'estate scorsa.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/w8SwauFTSvcABvxy5" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>🍽 Pranzo</strong>
+    <p><strong>La Boîte aux Lettres</strong> — atmosfera raccolta, cucina francese classica, meno turistica.</p>
+  </div>
+
+  <!-- MARAIS -->
+  <div class="section">
+    <div class="section-title">Pomeriggio · Marais</div>
+
+    <div class="stop" data-id="d2-10">
+      <div class="stop-head">
+        <div class="stop-num">10</div>
+        <div class="stop-info">
+          <div class="stop-name">Marché des Enfants Rouges</div>
+          <div class="stop-tag">Il più antico mercato coperto · 1615</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Il più antico mercato coperto di Parigi, fondato nel 1615 da Luigi XIII per rifornire il quartiere aristocratico del Marais e la nascente Place Royale (oggi Place des Vosges). Il nome curioso — "bambini rossi" — viene da un vicino orfanotrofio cinquecentesco i cui ospiti vestivano abiti rossi, simbolo della carità cristiana.</p>
+        <p>Chiuso lunedì: oggi sosta esterna sulla Rue de Bretagne. Negli altri giorni: bancarelle con cucine dal mondo (cous cous marocchino, bento giapponese, crêpes bio) e prodotti freschi del quartiere.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/c5J1HkwGnbgJwE22A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-11">
+      <div class="stop-head">
+        <div class="stop-num">11</div>
+        <div class="stop-info">
+          <div class="stop-name">Rue des Francs-Bourgeois</div>
+          <div class="stop-tag">Strada shopping del Marais</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>La strada-cardine del Marais, una delle poche di Parigi dove i negozi sono aperti anche di domenica. Il nome ("borghesi liberi") risale al XIV secolo: indicava gli abitanti esentati dal pagare l'impôt perché poveri.</p>
+        <p>Oggi alterna boutique di moda (parigine indipendenti e grandi nomi), librerie, hôtels particuliers riconvertiti. Lo sfondo è il Marais nobile del XVII secolo, sopravvissuto miracolosamente alla demolizione haussmanniana grazie al fatto che Haussmann ne preferì altri quartieri.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/c5J1HkwGnbgJwE22A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-12">
+      <div class="stop-head">
+        <div class="stop-num">12</div>
+        <div class="stop-info">
+          <div class="stop-name">Musée Carnavalet</div>
+          <div class="stop-tag">Storia di Parigi · gratuito</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Il museo della storia di Parigi, ospitato in due splendidi hôtels particuliers del XVI secolo collegati tra loro. Ingresso gratuito alla collezione permanente. Vale già solo per i cortili e per il "salone Belle Époque" — la ricostruzione della gioielleria Fouquet, disegnata da Alphonse Mucha nel 1901, smontata e rimontata qui pezzo per pezzo.</p>
+        <p>Madame de Sévigné, la celebre epistolografa, visse nell'hôtel principale dal 1677 al 1696: alcuni dei suoi mobili e oggetti personali sono ancora esposti. Il percorso copre Parigi dalla preistoria gallica alla Belle Époque, passando dalla Rivoluzione.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/c5J1HkwGnbgJwE22A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-13">
+      <div class="stop-head">
+        <div class="stop-num">13</div>
+        <div class="stop-info">
+          <div class="stop-name">Place des Vosges</div>
+          <div class="stop-tag">La piazza più antica · 1612</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>La più antica piazza progettata di Parigi, inaugurata nel 1612 con il nome di "Place Royale". Voluta da Enrico IV, fu il modello di tutte le piazze "regolari" europee: 36 palazzi identici in mattoni rossi e pietra bianca, con un'arcata continua al piano terra.</p>
+        <p>Cambiò nome nel 1800 in onore del dipartimento dei Vosgi, primo a versare le tasse alla Repubblica. Victor Hugo abitò al numero 6 dal 1832 al 1848 — la sua casa è oggi un museo gratuito. Sotto il pavillon du Roi (lato sud) c'è l'ingresso "segreto" dell'Hôtel de Sully, splendido cortile rinascimentale.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/c5J1HkwGnbgJwE22A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-14">
+      <div class="stop-head">
+        <div class="stop-num">14</div>
+        <div class="stop-info">
+          <div class="stop-name">Village Saint-Paul</div>
+          <div class="stop-tag">Labirinto di antiquari</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Un dedalo di cortili interconnessi nascosto dietro la chiesa di Saint-Paul, facile da mancare se non si conosce. Storicamente fu parte dell'Hôtel Saint-Pol, residenza reale di Carlo V costruita nel 1360 e poi demolita nel '500.</p>
+        <p>Riconosciuto come complesso storico nel 1962, oggi ospita oltre 200 antiquari, gallerie d'arte, ristoranti. Atmosfera molto parigina e per nulla turistica: argenteria del '500, design degli anni '70, libri antichi di mistica, bric-à-brac di qualità. Tutto aperto anche di domenica.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/c5J1HkwGnbgJwE22A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-15">
+      <div class="stop-head">
+        <div class="stop-num">15</div>
+        <div class="stop-info">
+          <div class="stop-name">Église Saint-Paul-Saint-Louis</div>
+          <div class="stop-tag">Chiesa gesuita · 1641</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Costruita tra il 1627 e il 1641 dai gesuiti, fu la prima chiesa di Parigi a rompere completamente con lo stile gotico e ad adottare il barocco italiano. La facciata, ispirata al Gesù di Roma, fu finanziata da Luigi XIII in persona — che pose anche la prima pietra.</p>
+        <p>Cosa cercare dentro: la "Vergine del Dolore" di Germain Pilon (1586). E l'iscrizione semi-cancellata "République française ou la mort" su un pilastro, probabile retaggio della Comune del 1871. Le urne con i cuori di Luigi XIII e Luigi XIV furono custodite qui fino alla Rivoluzione.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/c5J1HkwGnbgJwE22A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d2-16">
+      <div class="stop-head">
+        <div class="stop-num">16</div>
+        <div class="stop-info">
+          <div class="stop-name">Hôtel de Sens</div>
+          <div class="stop-tag">Architettura medievale</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Uno dei rarissimi esempi di architettura civile medievale a Parigi (insieme all'Hôtel de Cluny). Costruito tra il 1475 e il 1519 per l'Arcivescovo di Sens — quando Parigi era ancora una diocesi dipendente da Sens, fino al 1622.</p>
+        <p>La sua ospite più celebre fu la regina Margherita di Valois ("la regina Margot"), che vi soggiornò all'inizio del '600. Guarda alto sulla facciata: una palla di cannone è ancora incastrata nella pietra, lasciata lì come ricordo delle giornate rivoluzionarie del 1830. Oggi ospita la Biblioteca Forney, specializzata in arti decorative.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/c5J1HkwGnbgJwE22A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>🚌 Rientro</strong>
+    <p>Bus 67 o 76 dal Quai de l'Hôtel de Ville verso il 9°.</p>
+  </div>
+</section>
+
+<!-- MARTEDÌ -->
+<section class="day" id="mar">
+  <div class="day-header">
+    <div class="day-date">Martedì 26 maggio</div>
+    <div class="day-title">Marmottan, Passy, Trocadéro, Riva Sinistra</div>
+    <div class="day-desc">La giornata più atmosferica. Monet al mattino, Saint-Germain al pomeriggio.</div>
+    <div class="progress">
+      <span id="prog-mar-txt">0/13</span>
+      <div class="progress-bar"><div class="progress-fill" id="prog-mar"></div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>☕ Colazione</strong>
+    <p><strong>Miche de Pain</strong> — 42 Rue Cadet. Boulangerie artigianale, 4 min dall'hotel. Croissant alle mandorle, éclairs.</p>
+  </div>
+
+  <!-- MATTINA -->
+  <div class="section">
+    <div class="section-title">Mattina · Marmottan e Passy</div>
+
+    <div class="stop" data-id="d3-1">
+      <div class="stop-head">
+        <div class="stop-num">1</div>
+        <div class="stop-info">
+          <div class="stop-name">Musée Marmottan Monet</div>
+          <div class="stop-tag">Più grande collezione Monet al mondo</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Ospita la più grande collezione al mondo di opere di Claude Monet — oltre 100 dipinti — e la più grande collezione di Berthe Morisot. Aperto al pubblico nel 1934 nella villa neoclassica di Paul Marmottan, storico dell'arte specializzato nello stile Empire.</p>
+        <p>Il pezzo forte è "Impression, soleil levant" (1872), il quadro che diede letteralmente il nome all'Impressionismo: il critico Louis Leroy lo derise nel 1874 chiamando "impressionisti" l'intero gruppo di artisti — l'insulto divenne un movimento. La sala delle Ninfee al piano interrato è il vero cuore atmosferico del museo. Prenotare online.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/y3eucRMm13Uk6mZU8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-2">
+      <div class="stop-head">
+        <div class="stop-num">2</div>
+        <div class="stop-info">
+          <div class="stop-name">Square du Ranelagh</div>
+          <div class="stop-tag">Parco haussmanniano</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Un parco di 6 ettari creato da Haussmann nel 1860 sulle terre dell'antico Château de la Muette. Il nome è curioso: deriva da Lord Ranelagh, aristocratico irlandese che a Londra aveva creato uno dei primi pleasure gardens — Parigi copiò la moda nel '700, e il nome è rimasto.</p>
+        <p>Perfetto per una pausa dopo il museo: viali alberati, una giostra storica, panchine all'ombra. Frequentato dalla borghesia chic del XVI arrondissement.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/y3eucRMm13Uk6mZU8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-3">
+      <div class="stop-head">
+        <div class="stop-num">3</div>
+        <div class="stop-info">
+          <div class="stop-name">Rue de Passy</div>
+          <div class="stop-tag">Quartiere chic</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>La strada principale di Passy, antico villaggio termale annesso a Parigi solo nel 1860. Le acque ferruginose locali attiravano l'aristocrazia parigina già nel '700: Benjamin Franklin abitò qui dal 1777 al 1785 come ambasciatore americano.</p>
+        <p>Oggi è una delle vie più borghesi e residenziali della città — boutique francesi, salons de thé, niente catene mass-market. Quartiere preferito dalle famiglie altoborghesi parigine.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/y3eucRMm13Uk6mZU8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-4">
+      <div class="stop-head">
+        <div class="stop-num">4</div>
+        <div class="stop-info">
+          <div class="stop-name">Maison de Balzac</div>
+          <div class="stop-tag">Casa-museo · gratuita</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>L'unica residenza parigina di Honoré de Balzac sopravvissuta. Lo scrittore vi visse dal 1840 al 1847, sotto lo pseudonimo di "Monsieur de Breugnol" per sfuggire ai creditori che lo perseguitavano. La casa ha un ingresso posteriore segreto sulla collina, da cui scappare al primo bussare.</p>
+        <p>Qui scrisse o rivide molti dei capolavori della "Comédie Humaine": "Splendori e miserie delle cortigiane", "Cousin Pons", "La cousine Bette". Il piccolo giardino sospeso con vista sulla Senna è uno dei segreti meglio custoditi del XVI arrondissement. Ingresso gratuito alla collezione permanente.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/y3eucRMm13Uk6mZU8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-5">
+      <div class="stop-head">
+        <div class="stop-num">5</div>
+        <div class="stop-info">
+          <div class="stop-name">Pont de Bir-Hakeim</div>
+          <div class="stop-tag">Ponte a due piani · 1905</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Costruito tra il 1903 e il 1905 in acciaio, è un ponte a due livelli: sotto auto, pedoni e ciclisti, sopra la linea 6 della metro (vista mozzafiato sulla Torre Eiffel mentre il treno scorre). Originariamente si chiamava Pont de Passy: fu rinominato nel 1948 per commemorare la battaglia di Bir-Hakeim (Libia, giugno 1942), dove le Forze Francesi Libere resistettero per due settimane all'Afrika Korps di Rommel.</p>
+        <p>Reso celebre dal cinema: "Last Tango in Paris" di Bertolucci, "Inception" di Nolan, "Ronin", molti video musicali. Dal centro del ponte una scala porta giù all'Île aux Cygnes, una sottile isola artificiale (1827) con la replica della Statua della Libertà — donata dalla comunità americana di Parigi nel 1889.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/y3eucRMm13Uk6mZU8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-6">
+      <div class="stop-head">
+        <div class="stop-num">6</div>
+        <div class="stop-info">
+          <div class="stop-name">Jardins du Trocadéro & Palais de Chaillot</div>
+          <div class="stop-tag">La vista cartolina sulla Torre</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>I giardini e il palazzo furono costruiti per l'Esposizione Internazionale del 1937: un Trocadéro precedente, in stile moresco, era stato eretto per l'Expo del 1878 ed era considerato un orrore architettonico. Demolito senza rimpianti.</p>
+        <p>La terrazza tra le due ali del Palais de Chaillot è il punto panoramico più iconico per fotografare la Torre Eiffel — costruita anch'essa per un'Expo (quella del 1889). Qui Hitler si fece fotografare nel giugno 1940, sullo sfondo della Torre, durante la sola visita a Parigi della sua vita. Il palazzo ospita oggi tre musei e il Théâtre National de Chaillot.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/y3eucRMm13Uk6mZU8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>🥖 Pranzo</strong>
+    <p>Pane e formaggio al Champ de Mars, ai piedi della Torre.</p>
+  </div>
+
+  <!-- POMERIGGIO -->
+  <div class="section">
+    <div class="section-title">Pomeriggio · Riva Sinistra</div>
+
+    <div class="stop" data-id="d3-7">
+      <div class="stop-head">
+        <div class="stop-num">7</div>
+        <div class="stop-info">
+          <div class="stop-name">Torre Eiffel</div>
+          <div class="stop-tag">300 metri di ferro · 1889</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Costruita per l'Esposizione Universale del 1889 (centenario della Rivoluzione), doveva essere temporanea: smontata dopo 20 anni. Si salvò perché Gustave Eiffel la propose come antenna radio, e nel 1903 trasmise il primo segnale radio transatlantico — fu questa utilità a renderla intoccabile.</p>
+        <p>Quando fu costruita, 300 intellettuali parigini (tra cui Maupassant, Dumas figlio, Garnier) firmarono una petizione contro questo "lampione tragico", "scheletro di gabbia". Maupassant pranzava poi al ristorante della Torre dicendo: "È l'unico posto a Parigi da cui non la vedo". Oggi è il monumento a pagamento più visitato al mondo.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/LfEBsyPsW6VzYA43A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-8">
+      <div class="stop-head">
+        <div class="stop-num">8</div>
+        <div class="stop-info">
+          <div class="stop-name">Hôtel des Invalides</div>
+          <div class="stop-tag">Cupola dorata · 1671</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Voluto da Luigi XIV nel 1670 come ospizio per i veterani di guerra invalidi — il primo del suo genere in Europa. Ospitò fino a 4.000 soldati. L'enorme spianata davanti (l'Esplanade) era usata per le parate militari.</p>
+        <p>La cupola dorata, terminata nel 1708 da Jules Hardouin-Mansart, è ricoperta da 12,65 kg di oro vero, rifatti per l'ultima volta nel 1989. Sotto la cupola è sepolto Napoleone: il suo corpo, traslato da Sant'Elena nel 1840, riposa in sei bare nidificate l'una nell'altra (latta, mogano, due piombo, ebano, quercia) dentro un sarcofago di quarzite rossa.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/LfEBsyPsW6VzYA43A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-9">
+      <div class="stop-head">
+        <div class="stop-num">9</div>
+        <div class="stop-info">
+          <div class="stop-name">Musée Rodin</div>
+          <div class="stop-tag">Hôtel Biron e il suo giardino</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Ospitato nell'Hôtel Biron, splendido edificio del 1730 dove Rodin visse e lavorò gli ultimi nove anni della sua vita (1908-1917). Donò allo Stato l'intera collezione delle sue opere — sculture, disegni, e la sua collezione personale di Van Gogh, Renoir, Monet — a condizione che il museo nascesse qui.</p>
+        <p>Il giardino di 3 ettari è il vero capolavoro, soprattutto a maggio: "Il Pensatore" (originariamente progettato come Dante che medita sull'Inferno), "I Borghesi di Calais", "La Porta dell'Inferno". Camille Claudel, sua allieva e amante, ha una sala dedicata dentro. Prenotare online; chiuso lunedì.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/LfEBsyPsW6VzYA43A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-10">
+      <div class="stop-head">
+        <div class="stop-num">10</div>
+        <div class="stop-info">
+          <div class="stop-name">Église Saint-Germain-des-Prés</div>
+          <div class="stop-tag">La chiesa più antica · VI secolo</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>La chiesa più antica di Parigi, fondata nel VI secolo da Childeberto I, figlio di Clodoveo. Faceva parte di una grande abbazia benedettina (l'Abbaye Saint-Germain-des-Prés), centro intellettuale di prim'ordine in epoca medievale: gli "uomini di Saint-Germain" anticipavano illuministi e enciclopedisti.</p>
+        <p>Il campanile che vedi è del XI secolo, uno degli edifici più antichi della città. L'abbazia fu in larga parte distrutta durante la Rivoluzione (depositi di esplosivo all'interno la danneggiarono pesantemente). Tomba di Cartesio. Restauri recenti hanno rivelato affreschi medievali nascosti sotto strati di intonaco.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/LfEBsyPsW6VzYA43A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-11">
+      <div class="stop-head">
+        <div class="stop-num">11</div>
+        <div class="stop-info">
+          <div class="stop-name">Les Deux Magots</div>
+          <div class="stop-tag">Caffè letterario · 1884</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Aperto nel 1884 dove prima c'era una mercerie cinese: le due statuette di mandarini ("magots") sono rimaste, appese al pilastro centrale della sala. Il nome era a sua volta tratto da una commedia popolare dell'epoca, "Les Deux Magots de la Chine".</p>
+        <p>Negli anni '20 divenne ritrovo dei surrealisti (Breton, Aragon, Prévert). Poi degli esistenzialisti: Sartre e Simone de Beauvoir scrivevano qui ogni giorno. Hemingway, James Joyce, Picasso, Brecht — tutti passati di qui. Dal 1933 assegna il Prix des Deux Magots, premio letterario nato come risposta al Goncourt. Cioccolata calda all'antica leggendaria.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/LfEBsyPsW6VzYA43A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-12">
+      <div class="stop-head">
+        <div class="stop-num">12</div>
+        <div class="stop-info">
+          <div class="stop-name">Café de Flore</div>
+          <div class="stop-tag">Il rivale, a 44 metri · 1885</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Aperto nel 1885, un anno dopo Les Deux Magots: i due caffè sono storicamente rivali, separati da appena 44 metri. Il nome viene da una statua di Flora (dea romana dei fiori) che stava sul boulevard. Fu sul terrazzo del Flore che Apollinaire coniò nel 1917 il termine "surrealismo".</p>
+        <p>Negli anni '40 fu il "ufficio" di Sartre e Beauvoir, che lo definirono "casa". Sartre scrisse qui parti de "L'Essere e il Nulla". Picasso, Hemingway, Truman Capote, Camus: tutti clienti. Karl Lagerfeld passava qui ore a leggere Vogue da solo al tavolo al pianterreno. Arredamento praticamente immutato dagli anni '30: panche rosse, mogano, ottone.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/LfEBsyPsW6VzYA43A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d3-13">
+      <div class="stop-head">
+        <div class="stop-num">13</div>
+        <div class="stop-info">
+          <div class="stop-name">Jardin du Luxembourg</div>
+          <div class="stop-tag">Il giardino di Maria de' Medici · 1612</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Creato nel 1612 da Maria de' Medici, vedova di Enrico IV, che voleva un palazzo in stile fiorentino (ispirato a Palazzo Pitti) e un giardino come quello di Boboli — nostalgia della sua infanzia in Toscana. Il palazzo oggi ospita il Senato francese.</p>
+        <p>Cose da non perdere: la Fontana de' Medici (1630, in fondo a un viale ombroso, è il vero gioiello nascosto del parco); il grande bassin ottagonale dove i bambini fanno navigare le piccole barche a vela noleggiabili (tradizione ininterrotta dal 1927); il modellino originale della Statua della Libertà di Bartholdi del 1870. Sedersi su una sedia verde di metallo qui è un rituale parigino.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/LfEBsyPsW6VzYA43A" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MERCOLEDÌ -->
+<section class="day" id="mer">
+  <div class="day-header">
+    <div class="day-date">Mercoledì 27 maggio</div>
+    <div class="day-title">Ultima mattina · Grands Boulevards & Opéra</div>
+    <div class="day-desc">Tutto a piedi dall'hotel. Ritorno verso mezzogiorno per il treno.</div>
+    <div class="progress">
+      <span id="prog-mer-txt">0/6</span>
+      <div class="progress-bar"><div class="progress-fill" id="prog-mer"></div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>☕ Colazione</strong>
+    <p><strong>Mamiche</strong> — 45 Rue Condorcet. La migliore boulangerie del 9°, levain a mano ogni giorno.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Mattina · Belle Époque tour</div>
+
+    <div class="stop" data-id="d4-1">
+      <div class="stop-head">
+        <div class="stop-num">1</div>
+        <div class="stop-info">
+          <div class="stop-name">Grands Boulevards</div>
+          <div class="stop-tag">L'asse del XIX secolo</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>L'asse storico dei Grands Boulevards fu disegnato da Luigi XIV nel 1670 sul tracciato delle vecchie mura medievali di Carlo V — diventate inutili dopo le conquiste del Re Sole. Da fortificazione a passeggiata alberata: una rivoluzione urbanistica.</p>
+        <p>Tra '800 e Belle Époque furono il centro nevralgico della vita parigina: teatri, brasseries, caffè-concert, primi cinematografi (i fratelli Lumière proiettarono il primo film commerciale qui, al Grand Café del Boulevard des Capucines, il 28 dicembre 1895). Insegne in ferro battuto, mansarde di zinco, lampioni Art Nouveau.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/FkLRetmCwVwCjniC8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d4-2">
+      <div class="stop-head">
+        <div class="stop-num">2</div>
+        <div class="stop-info">
+          <div class="stop-name">Palais Garnier</div>
+          <div class="stop-tag">L'Opéra della Belle Époque · 1875</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Costruito tra il 1861 e il 1875 per volere di Napoleone III nell'ambito della Parigi haussmanniana. Charles Garnier vinse il concorso a 35 anni, perfetto sconosciuto. Quando l'imperatrice Eugenia, contrariata, gli chiese "Che stile è questo? Non è greco, non è Luigi XV, non è Luigi XVI!", Garnier rispose: "È Napoleone III, Madame".</p>
+        <p>Il sottosuolo nasconde una vera cisterna piena d'acqua: la falda freatica era così alta che durante i lavori non riuscivano a tenere asciutto il cantiere; Garnier la incorporò nel progetto. Oggi è usata per addestrare i pompieri di Parigi alle immersioni. È anche il "lago" sotterraneo del "Fantasma dell'Opera" di Gaston Leroux (1910). Il soffitto del 1964 fu dipinto da Marc Chagall.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/FkLRetmCwVwCjniC8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d4-3">
+      <div class="stop-head">
+        <div class="stop-num">3</div>
+        <div class="stop-info">
+          <div class="stop-name">Café de la Paix</div>
+          <div class="stop-tag">Belle Époque pura · 1862</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Aperto il 30 giugno 1862 al pianoterra del Grand Hôtel, fu costruito insieme al Palais Garnier come parte del progetto haussmanniano. Decorazione interna in stile Napoleone III: classificata Monumento Storico, praticamente immutata dall'inaugurazione.</p>
+        <p>Frequentato durante la Belle Époque da Zola, Maupassant, Tchaikovsky, Oscar Wilde, Massenet, Sergei Diaghilev e dal futuro re Edoardo VII. La prima proiezione cinematografica privata fu organizzata qui nel 1896. Caffè caro (8-10€), ma per una pausa in terrazza con vista sul Palais Garnier vale la pena come gesto di chiusura del viaggio.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/FkLRetmCwVwCjniC8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d4-4">
+      <div class="stop-head">
+        <div class="stop-num">4</div>
+        <div class="stop-info">
+          <div class="stop-name">Place Vendôme</div>
+          <div class="stop-tag">La piazza del lusso · 1699</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Una delle cinque piazze reali di Parigi, disegnata da Jules Hardouin-Mansart e inaugurata nel 1699 per Luigi XIV. La pianta ottagonale era una novità: Mansart inventò il modello "piazza chiusa" copiato in tutta Europa.</p>
+        <p>La colonna al centro (Colonne Vendôme), eretta da Napoleone nel 1810 sul modello della Colonna Traiana, è fatta con il bronzo fuso di 1.250 cannoni austriaci e russi catturati ad Austerlitz. Nel 1871, durante la Comune, fu abbattuta su iniziativa del pittore Gustave Courbet — che fu poi condannato a pagare la ricostruzione. Oggi la piazza è il regno della gioielleria mondiale (Cartier, Boucheron, Van Cleef, Chaumet) e dell'Hôtel Ritz.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/FkLRetmCwVwCjniC8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d4-5">
+      <div class="stop-head">
+        <div class="stop-num">5</div>
+        <div class="stop-info">
+          <div class="stop-name">Rue de Rivoli</div>
+          <div class="stop-tag">Portici napoleonici</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Voluta da Napoleone nel 1802 e proseguita per oltre 60 anni, attraversa quasi tutto il centro di Parigi (3 km). Il nome celebra la sua vittoria a Rivoli (gennaio 1797). I portici napoleonici sul lato nord — uniformi, rigorosi, perfettamente neoclassici — sono il primo esempio di urbanistica "moderna" parigina, anticipatore di Haussmann.</p>
+        <p>Per legge, le facciate dovevano essere identiche e non c'erano insegne pubblicitarie: nasceva il concetto di "armonia urbana". Lungo i portici trovi librerie storiche (W.H. Smith, Galignani — la più antica libreria inglese del continente, fondata nel 1801), salons de thé come Angelina (1903), e il Louvre sulla destra.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/FkLRetmCwVwCjniC8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="stop" data-id="d4-6">
+      <div class="stop-head">
+        <div class="stop-num">6</div>
+        <div class="stop-info">
+          <div class="stop-name">Jardin du Palais Royal</div>
+          <div class="stop-tag">Chiusura silenziosa</div>
+        </div>
+        <div class="stop-toggle">▾</div>
+      </div>
+      <div class="stop-body"><div class="stop-content">
+        <p>Il giardino racchiuso dalle tre ali del palazzo, aggiunte alla fine del '700 dal Duca d'Orléans (Philippe Égalité) per fare cassa: affittò le arcate a commercianti, caffè e perfino sale da gioco. Per anni il Palais Royal fu il "Las Vegas" di Parigi — gioco d'azzardo, prostituzione, librai sediziosi.</p>
+        <p>Oggi è silenzioso, contemplativo: filari di tigli e ippocastani perfettamente potati, due lunghi viali alberati, una fontana centrale. Sulle arcate ci sono boutique storiche come Didier Ludot (vintage haute couture). Le Colonne di Buren (1986) sono nel cortile interno (Cour d'Honneur), separato dal giardino vero e proprio. Chiusura perfetta del viaggio.</p>
+        <div class="stop-actions">
+          <a class="btn btn-map" href="https://maps.app.goo.gl/FkLRetmCwVwCjniC8" target="_blank">Apri mappa</a>
+          <button class="btn btn-check">Visitata</button>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>🚕 Partenza</strong>
+    <p>Rientro hotel verso 11:45–12:00, taxi/Uber per Gare de Lyon. Treno alle 14:30.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Itinerario · 24–27 maggio 2026</p>
+  <p style="margin-top:6px;">Progresso salvato sul dispositivo</p>
+  <button class="reset" onclick="resetAll()">Reset tappe visitate</button>
+</footer>
+
+<script>
+  // STORAGE — uso solo memoria interna (no localStorage)
+  // ma persisto via window.storage se disponibile
+  const STORAGE_KEY = 'parigi-checks';
+  let checks = {};
+
+  async function loadChecks() {
+    try {
+      if (window.storage) {
+        const r = await window.storage.get(STORAGE_KEY);
+        if (r && r.value) checks = JSON.parse(r.value);
+      }
+    } catch(e) { checks = {}; }
+    applyChecks();
+  }
+
+  async function saveChecks() {
+    try {
+      if (window.storage) {
+        await window.storage.set(STORAGE_KEY, JSON.stringify(checks));
+      }
+    } catch(e) {}
+  }
+
+  function applyChecks() {
+    document.querySelectorAll('.stop').forEach(stop => {
+      const id = stop.dataset.id;
+      if (checks[id]) {
+        stop.classList.add('checked');
+        const btn = stop.querySelector('.btn-check');
+        if (btn) btn.textContent = '✓ Visitata';
+      }
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    ['dom','lun','mar','mer'].forEach(d => {
+      const section = document.getElementById(d);
+      if (!section) return;
+      const stops = section.querySelectorAll('.stop');
+      const done = section.querySelectorAll('.stop.checked');
+      const fill = document.getElementById('prog-' + d);
+      const txt = document.getElementById('prog-' + d + '-txt');
+      if (fill && stops.length) {
+        fill.style.width = (done.length / stops.length * 100) + '%';
+      }
+      if (txt) txt.textContent = `${done.length}/${stops.length}`;
+    });
+  }
+
+  // EXPAND/COLLAPSE
+  document.querySelectorAll('.stop-head').forEach(head => {
+    head.addEventListener('click', (e) => {
+      head.parentElement.classList.toggle('open');
+    });
+  });
+
+  // CHECKBOX
+  document.querySelectorAll('.btn-check').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const stop = btn.closest('.stop');
+      const id = stop.dataset.id;
+      if (checks[id]) {
+        delete checks[id];
+        stop.classList.remove('checked');
+        btn.textContent = 'Visitata';
+      } else {
+        checks[id] = true;
+        stop.classList.add('checked');
+        btn.textContent = '✓ Visitata';
+      }
+      saveChecks();
+      updateProgress();
+    });
+  });
+
+  // Buttons in .stop-actions: prevent toggle when clicking map link
+  document.querySelectorAll('.stop-actions a, .stop-actions button').forEach(el => {
+    el.addEventListener('click', e => e.stopPropagation());
+  });
+
+  // Day nav: smooth scroll
+  document.querySelectorAll('.day-nav a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        const y = target.getBoundingClientRect().top + window.scrollY - 140;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+  });
+
+  function resetAll() {
+    if (!confirm('Resettare tutte le tappe visitate?')) return;
+    checks = {};
+    document.querySelectorAll('.stop').forEach(s => {
+      s.classList.remove('checked');
+      const btn = s.querySelector('.btn-check');
+      if (btn) btn.textContent = 'Visitata';
+    });
+    saveChecks();
+    updateProgress();
+  }
+
+  loadChecks();
+</script>
+
+</body>
+</html>
